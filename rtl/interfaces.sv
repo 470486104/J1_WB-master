@@ -8,6 +8,7 @@
  * modport slave  (.dat_i(dat_m), .dat_o(dat_s), ...);
  */
 
+
 interface if_wb
   (input wire rst,
    input wire clk);
@@ -21,7 +22,7 @@ interface if_wb
    logic                     stall;
    logic                     stb;
    logic                     we;
-   logic [dat_width - 1 : 0] dat_m; // channel from master
+   logic [dat_width - 1 : 0] dat_m; // channel from master  
    logic [dat_width - 1 : 0] dat_s; // channel from slave
 
    modport master
@@ -37,8 +38,8 @@ interface if_wb
       input  dat_s,
       output dat_m
 `else
-      input  .dat_i(dat_s),
-      output .dat_o(dat_m)
+      input  .dat_i(dat_s),	// 主机的输入 自dat_s
+      output .dat_o(dat_m)  // 主机的输出 至dat_m
 `endif
       );
 
@@ -55,8 +56,8 @@ interface if_wb
       input  dat_m,
       output dat_s
 `else
-      input  .dat_i(dat_m),
-      output .dat_o(dat_s)
+      input  .dat_i(dat_m),	// 从机的输入 自dat_m
+      output .dat_o(dat_s)	// 从机的输出 至dat_s
 `endif
       );
 

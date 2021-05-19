@@ -4,7 +4,7 @@
 
 module spram
   #(parameter size       = 'h10000, // maximum data space for J1
-    parameter addr_width = $clog2(size),
+    parameter addr_width = $clog2(size),  // $clog2(a):计算log2 (a) = ?
     parameter data_width = 16)
    (input  wire                    clock,
     input  wire [addr_width - 1:0] address,

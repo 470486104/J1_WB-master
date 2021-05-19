@@ -56,8 +56,6 @@ module top_c5gx
 
    /* HEX3 (1.2 V) */
    output wire [6:0]  HEX3,		
-
-
 `endif
 
    /* HDMI */
@@ -94,8 +92,8 @@ module top_c5gx
 
 
    /* I2C (2.5 V) */
-   output wire        I2C_SCL,
-   inout  wire        I2C_SDA,
+   output wire        I2C_SCL, // 数据线
+   inout  wire        I2C_SDA, // 时钟线
 
    /* KEY (1.2 V) */
    input  wire [3:0]  KEY,

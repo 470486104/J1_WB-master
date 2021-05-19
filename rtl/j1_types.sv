@@ -22,7 +22,7 @@ package j1_types;
          tag_t        tag;
          logic [12:0] address;
       } bra;
-
+	
       struct packed {
          tag_t              tag;
          logic              r_to_pc;

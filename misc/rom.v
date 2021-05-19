@@ -9,7 +9,7 @@ module rom
    (input  wire                    clock,
     input  wire [addr_width - 1:0] address,
     output reg  [data_width - 1:0] q,
-    input  wire                    cen);
+    input  wire                    cen); // read enable
 
    (* ram_init_file = "j1.mif" *) reg [data_width - 1:0] mem[0:size - 1];
 

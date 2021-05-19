@@ -91,7 +91,8 @@ module j1_wb
         is_ld      = is_alu && instr.alu.op == OP_AT;
         is_st      = is_alu & instr.alu.n_to_mem;
      end
-
+	
+	
    /* calculate next TOS value */
    always_comb
      if (is_lit)

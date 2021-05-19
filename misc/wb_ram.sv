@@ -4,7 +4,7 @@
 
 module wb_ram
   #(parameter size       = 'h800, // RAM2048x16
-    parameter waitcycles = 0)
+    parameter waitcycles = 0)  // 0 不使用流水线；1 使用流水线
    (if_wb.slave wb);
 
    wire valid;   // Wishbone bus valid
@@ -22,6 +22,7 @@ module wb_ram
    assign wb.dat_o = wb_dat_o;
 `endif
 
+	// ram
    spram
      #(.size(size))
    ram
@@ -29,8 +30,8 @@ module wb_ram
       .address (wb.adr[$clog2(size) - 1:0]),
       .data    (wb_dat_i),
       .q       (wb_dat_o),
-      .cen     (ram_cen),
-      .wren    (ram_wen));
+      .cen     (ram_cen),	// 读使能
+      .wren    (ram_wen));	// 写使能
 
    assign ram_cen = valid;
    assign ram_wen = ram_cen & wb.we;
@@ -38,13 +39,13 @@ module wb_ram
    /* Wishbone control
     * Classic pipelined bus cycles
     */
-   assign valid = wb.cyc & wb.stb;
+   assign valid = wb.cyc & wb.stb; // 主设备请求使用总线 且 主设备发起了一次总线操作  **表示允许总线操作
 
    always_ff @(posedge wb.clk)
      if (wb.rst)
        wb.ack <= 1'b0;
      else
-       wb.ack <= valid & ~wb.stall;
+       wb.ack <= valid & ~wb.stall; // 允许总线操作 且 流水线停止   **表示本次操作结束
 
    generate
       case (waitcycles)

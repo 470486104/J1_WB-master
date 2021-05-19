@@ -3,28 +3,28 @@
 `default_nettype none
 
 module wb_intercon
-  (if_wb.slave  wbm,   // CPU
-   if_wb.master wbs1,  // ROM
-   if_wb.master wbs2,  // RAM
-   if_wb.master wbs3,  // I/O
-   if_wb.master wbs4,  // I/O
-   if_wb.master wbs5); // I/O
+  (if_wb.slave  wbm	,	// 来自 CPU 的数据 
+   if_wb.master wbs1,	// 来自 ROM 的数据
+   if_wb.master wbs2,	// 来自 RAM 的数据
+   if_wb.master wbs3,	// 来自 I/O 的数据
+   if_wb.master wbs4,	// 来自 I/O 的数据
+   if_wb.master wbs5);	// 来自 I/O 的数据
 
    wire        valid;
    wire        sel1, sel2, sel3, sel4, sel5;
    logic       sel1_r, sel2_r, sel3_r, sel4_r, sel5_r;
 
    /* work around missing modport expressions */
-   wire [15:0] wbm_dat_i, wbm_dat_o,
-               wbs1_dat_i, wbs1_dat_o,
-               wbs2_dat_i, wbs2_dat_o,
-               wbs3_dat_i, wbs3_dat_o,
-               wbs4_dat_i, wbs4_dat_o,
-               wbs5_dat_i, wbs5_dat_o;
+   wire [15:0] wbm_dat_i, wbm_dat_o	 ,						//////////////////////////////////////////////////	
+               wbs1_dat_i, wbs1_dat_o,  					//                                              //
+               wbs2_dat_i, wbs2_dat_o,  					//         数据中转                             //
+               wbs3_dat_i, wbs3_dat_o,						//                   数据中转                   //
+               wbs4_dat_i, wbs4_dat_o,  					//                                              //
+               wbs5_dat_i, wbs5_dat_o;  					//////////////////////////////////////////////////
 
 `ifdef NO_MODPORT_EXPRESSIONS
-   assign wbm_dat_i  = wbm.dat_m;
-   assign wbm.dat_s  = wbm_dat_o;
+   assign wbm_dat_i  = wbm.dat_m ;
+   assign wbm.dat_s  = wbm_dat_o ;
    assign wbs1_dat_i = wbs1.dat_s;
    assign wbs2_dat_i = wbs2.dat_s;
    assign wbs3_dat_i = wbs3.dat_s;
@@ -36,8 +36,8 @@ module wb_intercon
    assign wbs4.dat_m = wbs4_dat_o;
    assign wbs5.dat_m = wbs5_dat_o;
 `else
-   assign wbm_dat_i  = wbm.dat_i;
-   assign wbm.dat_o  = wbm_dat_o;
+   assign wbm_dat_i  = wbm.dat_i ;
+   assign wbm.dat_o  = wbm_dat_o ;
    assign wbs1_dat_i = wbs1.dat_i;
    assign wbs2_dat_i = wbs2.dat_i;
    assign wbs3_dat_i = wbs3.dat_i;
@@ -51,9 +51,9 @@ module wb_intercon
 `endif
 
    assign valid = wbm.cyc & wbm.stb;
-   assign sel1  = valid && (wbm.adr[15:12] == 4'b0000);  // ROM 0000H...1FFFH
-   assign sel2  = valid && (wbm.adr[15:12] == 4'b0001);  // RAM 2000H...3FFFH
-   assign sel3  = valid && (wbm.adr[15:11] == 5'b00101); // I/O 5000H...5FFFH
+   assign sel1  = valid && (wbm.adr[15:12] == 4'b0000);  // ROM 0000H...1FFFH   8KB
+   assign sel2  = valid && (wbm.adr[15:12] == 4'b0001);  // RAM 2000H...3FFFH	8KB
+   assign sel3  = valid && (wbm.adr[15:11] == 5'b00101); // I/O 5000H...5FFFH	uart
    assign sel4  = valid && (wbm.adr[15:11] == 5'b00110); // I/O 6000H...6FFFH
    assign sel5  = valid && (wbm.adr[15:11] == 5'b00111); // I/O 7000H...7FFFH
 
